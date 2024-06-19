@@ -29,18 +29,18 @@ class FileBlock implements Block
             return [];
         }
 
-        $exceptionFile = $this->getExceptionFile();
+        $exceptionClass = $this->getExceptionClass();
 
-        if (is_null($exceptionFile)) {
+        if (is_null($exceptionClass)) {
             return [];
         }
 
         return [
             (new HeaderSection('File :file_folder:'))->toArray(),
-            (new TextSection($exceptionFile->getFileWithLine()))->toArray(),
+            (new TextSection($exceptionClass->getClassWithLine()))->toArray(),
             (new FieldsSection([
-                sprintf("*Class:*\n%s", $exceptionFile->getClass()),
-                sprintf("*Function:*\n%s", $exceptionFile->getFunction()),
+                sprintf("*Class:*\n%s", $exceptionClass->getClass()),
+                sprintf("*Function:*\n%s", $exceptionClass->getFunction()),
             ]))->toArray(),
         ];
     }
@@ -48,13 +48,14 @@ class FileBlock implements Block
     /**
      * @return TraceRow|null
      */
-    private function getExceptionFile(): ?TraceRow
+    private function getExceptionClass(): ?TraceRow
     {
         $exceptionFile = null;
 
         foreach ($this->logRecord->getExceptionTrace() as $traceRow) {
-            if (is_null($exceptionFile) && !$traceRow->isVendorFile()) {
+            if (is_null($exceptionFile) && !$traceRow->isVendorClass()) {
                 $exceptionFile = $traceRow;
+                break;
             }
         }
 

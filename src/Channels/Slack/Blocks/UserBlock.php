@@ -30,7 +30,7 @@ class UserBlock implements Block
         return [
             (new HeaderSection('User info :information_desk_person:'))->toArray(),
             (new FieldsSection([
-                sprintf("*Id:*\n%s", $user->getAuthIdentifierName()),
+                sprintf("*Id:*\n%s", $user->getAuthIdentifier()),
                 sprintf("*Email:*\n%s", $user->getEmailForPasswordReset()),
             ]))->toArray(),
         ];
