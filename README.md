@@ -44,7 +44,7 @@ or add additional log channel to yours. As example
 You can also publish the config file to change implementations (ie. interface to specific class).
 
 ```shell
-php artisan vendor:publish --provider="Shureban\LaravelObjectMapper\ObjectMapperServiceProvider"
+php artisan vendor:publish --provider="Shureban\LaravelLogplex\LogplexServiceProvider"
 ```
 
 ## Result
