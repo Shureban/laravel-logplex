@@ -1,0 +1,46 @@
+{
+    "name": "shureban/laravel-logplex",
+    "description": "Laravel pretty logging messages",
+    "keywords": [
+        "log",
+        "logging",
+        "slack",
+        "trace",
+        "error",
+        "shureban"
+    ],
+    "type": "laravel-package",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Shureban",
+            "email": "Shureban@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "minimum-stability": "dev",
+    "version": "1.0.0",
+    "autoload": {
+        "psr-4": {
+            "Shureban\\LaravelLogplex\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Shureban\\LaravelLogplex\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "^8.2",
+        "laravel/framework": "^v10.0.0",
+        "guzzlehttp/guzzle": "^7.8"
+    },
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Shureban\\LaravelLogplex\\LogplexServiceProvider"
+            ]
+        }
+    }
+}
