@@ -2,8 +2,8 @@
 
 namespace Shureban\LaravelLogplex;
 
-use App\Models\User;
 use Auth;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Monolog\Level;
 use Monolog\LogRecord as BaseLogRecord;
