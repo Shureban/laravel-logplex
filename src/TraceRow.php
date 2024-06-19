@@ -35,14 +35,6 @@ class TraceRow
     /**
      * @return string
      */
-    public function getClassWithLine(): string
-    {
-        return sprintf('%s:%d', $this->getClass(), $this->getLine());
-    }
-
-    /**
-     * @return string
-     */
     public function getClass(): string
     {
         return $this->baseTrace['class'] ?? '';
@@ -54,14 +46,6 @@ class TraceRow
     public function getLine(): int
     {
         return $this->baseTrace['line'] ?? 0;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFunction(): string
-    {
-        return $this->baseTrace['function'] ?? '';
     }
 
     /**
