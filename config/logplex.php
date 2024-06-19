@@ -1,7 +1,7 @@
 <?php
 
 use Monolog\Level;
-use Shureban\LaravelLogplex\Builder\MessageBuilderInterface;
+use Shureban\LaravelLogplex\Builder\MessageBuilder;
 
 return [
     /*
@@ -57,5 +57,5 @@ return [
     | By default, the provided MessageBuilder class is used.
     |
     */
-    'message_builder' => MessageBuilderInterface::class,
+    'message_builder' => MessageBuilder::class,
 ];

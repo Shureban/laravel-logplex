@@ -20,23 +20,16 @@ Shureban\LaravelLogplex\LogplexServiceProvider::class,
 
 ```
 'logplex' => [
-    'driver'   => 'custom',
-    'level'    => env('LOG_LEVEL', 'debug'),
-    'via'      => LogplexLogger::class,
-    'channels' => [
-        new SlackChannel(
-            env('SLACK_WEBHOOK_URL'),
-            env('SLACK_USERNAME'),
-            env('SLACK_EMOJI')
-        ),
-    ],
+    'driver' => 'custom',
+    'via'    => \Shureban\LaravelLogplex\LogplexLogger::class,
+    'level'  => env('LOGPLEX_LEVEL', \Monolog\Level::Error),
 ]
 ```
 
 ### 2. Edit you .env file
 
 ```
-LOG_CHANNEL=logplex
+LOG_STACK_CHANNELS=single,logplex
 ```
 
 or add additional log channel to yours. As example
@@ -46,6 +39,12 @@ or add additional log channel to yours. As example
     'driver'   => 'stack',
     'channels' => ['single','logplex'],
 ],
+```
+
+You can also publish the config file to change implementations (ie. interface to specific class).
+
+```shell
+php artisan vendor:publish --provider="Shureban\LaravelObjectMapper\ObjectMapperServiceProvider"
 ```
 
 ## Result
