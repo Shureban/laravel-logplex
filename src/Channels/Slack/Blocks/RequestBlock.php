@@ -27,10 +27,16 @@ class RequestBlock implements Block
             return [];
         }
 
-        return [
+        $requestData = $request->all();
+        $result      = [
             (new HeaderSection('Request information :pinched_fingers:'))->toArray(),
             (new TextSection(sprintf('%s: %s', $request->method(), $request->fullUrl())))->toArray(),
-            (new TextSection(sprintf("```%s```", json_encode($request->all()))))->toArray(),
         ];
+
+        if (count($requestData) > 0) {
+            (new TextSection(sprintf("```%s```", json_encode($requestData))))->toArray();
+        }
+
+        return $result;
     }
 }
