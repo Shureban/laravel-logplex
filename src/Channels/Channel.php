@@ -2,9 +2,9 @@
 
 namespace Shureban\LaravelLogplex\Channels;
 
-use Shureban\LaravelLogplex\LogRecord;
+use Illuminate\Contracts\Support\Arrayable;
 
 interface Channel
 {
-    public function send(LogRecord $logRecord): void;
+    public function send(Arrayable $message): void;
 }

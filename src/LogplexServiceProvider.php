@@ -22,5 +22,6 @@ class LogplexServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->publishes([__DIR__ . '/../config' => base_path('config')]);
     }
 }

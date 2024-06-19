@@ -3,26 +3,12 @@
 namespace Shureban\LaravelLogplex;
 
 use Monolog\Handler\AbstractProcessingHandler;
-use Monolog\Level;
 use Monolog\LogRecord as BaseLogRecord;
-use Shureban\LaravelLogplex\Channels\Channel;
+use Shureban\LaravelLogplex\Builder\MessageBuilderInterface;
+use Shureban\LaravelLogplex\Channels\Slack\SlackChannel;
 
 class LogplexHandler extends AbstractProcessingHandler
 {
-    private array $channels;
-
-    /**
-     * @param Channel[]        $channels
-     * @param int|string|Level $level
-     * @param bool             $bubble
-     */
-    public function __construct(array $channels, int|string|Level $level = Level::Debug, bool $bubble = true)
-    {
-        parent::__construct($level, $bubble);
-
-        $this->channels = $channels;
-    }
-
     /**
      * @param BaseLogRecord $record
      *
@@ -30,10 +16,24 @@ class LogplexHandler extends AbstractProcessingHandler
      */
     protected function write(BaseLogRecord $record): void
     {
-        $logRecord = LogRecord::createFromBase($record);
+        $logRecord      = LogRecord::createFromBase($record);
+        $username       = config('logplex.username');
+        $emoji          = config('logplex.emoji');
+        $messageBuilder = $this->getMessageBuilder($logRecord);
+        $message        = $messageBuilder->buildSlackMessage($logRecord, $username, $emoji);
 
-        foreach ($this->channels as $channel) {
-            $channel->send($logRecord);
-        }
+        (new SlackChannel(config('logplex.webhook_url')))->send($message);
+    }
+
+    /**
+     * @param LogRecord $logRecord
+     *
+     * @return MessageBuilderInterface
+     */
+    private function getMessageBuilder(LogRecord $logRecord): MessageBuilderInterface
+    {
+        $builderNamespace = config('logplex.message_builder');
+
+        return new $builderNamespace($logRecord);
     }
 }

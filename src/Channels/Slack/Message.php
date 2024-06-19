@@ -2,11 +2,12 @@
 
 namespace Shureban\LaravelLogplex\Channels\Slack;
 
-use App\Components\Http\JsonRequest;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
+use JsonSerializable;
 
-class Message extends JsonRequest
+class Message implements Arrayable, Jsonable, JsonSerializable
 {
-
     private string $username;
     private string $iconEmoji;
     private array  $blocks = [];
@@ -31,6 +32,27 @@ class Message extends JsonRequest
         $this->blocks[] = $section->toArray();
     }
 
+    /**
+     * @param int $options
+     *
+     * @return string
+     */
+    public function toJson($options = 0): string
+    {
+        return json_encode($this->toArray(), $options);
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
+
+    /**
+     * @return array
+     */
     public function toArray(): array
     {
         return [

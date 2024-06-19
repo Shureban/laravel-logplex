@@ -3,11 +3,11 @@
 namespace Shureban\LaravelLogplex\Channels\Slack\Blocks;
 
 use Shureban\LaravelLogplex\Channels\Slack\Block;
-use Shureban\LaravelLogplex\Channels\Slack\Elements\FieldsSection;
 use Shureban\LaravelLogplex\Channels\Slack\Elements\HeaderSection;
+use Shureban\LaravelLogplex\Channels\Slack\Elements\TextSection;
 use Shureban\LaravelLogplex\LogRecord;
 
-class UserBlock implements Block
+class RequestBlock implements Block
 {
     private LogRecord $logRecord;
 
@@ -21,18 +21,16 @@ class UserBlock implements Block
 
     public function toArray(): array
     {
-        $user = $this->logRecord->getUser();
+        $request = $this->logRecord->getRequest();
 
-        if (is_null($user)) {
+        if (is_null($request) || app()->runningInConsole()) {
             return [];
         }
 
         return [
-            (new HeaderSection('User info :information_desk_person:'))->toArray(),
-            (new FieldsSection([
-                sprintf("*Id:*\n%s", $user->id),
-                sprintf("*Email:*\n%s", $user->email),
-            ]))->toArray(),
+            (new HeaderSection('Request information :pinched_fingers:'))->toArray(),
+            (new TextSection(sprintf('%s: %s', $request->method(), $request->fullUrl())))->toArray(),
+            (new TextSection(sprintf("```%s```", json_encode($request->all()))))->toArray(),
         ];
     }
 }

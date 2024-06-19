@@ -2,63 +2,35 @@
 
 namespace Shureban\LaravelLogplex\Channels\Slack;
 
-use App\Components\Http\Client;
-use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Facades\Http;
 use Shureban\LaravelLogplex\Channels\Channel;
-use Shureban\LaravelLogplex\Channels\Slack\Blocks\FileBlock;
-use Shureban\LaravelLogplex\Channels\Slack\Blocks\HeaderBlock;
-use Shureban\LaravelLogplex\Channels\Slack\Blocks\TraceBlock;
-use Shureban\LaravelLogplex\Channels\Slack\Blocks\UserBlock;
-use Shureban\LaravelLogplex\Channels\Slack\Elements\DividerSection;
-use Shureban\LaravelLogplex\LogRecord;
 
 class SlackChannel implements Channel
 {
     private string $url;
-    private string $username;
-    private string $emoji;
-    private Client $client;
 
     /**
-     * @param string      $url
-     * @param string      $username
-     * @param string|null $emoji
+     * @param string $url
      */
-    public function __construct(string $url, string $username, string $emoji = null)
+    public function __construct(string $url)
     {
-        $this->url      = $url;
-        $this->username = $username;
-        $this->emoji    = $emoji;
-        $this->client   = new Client([
-            'timeout' => 5,
-            'headers' => [
-                'Accept'       => 'application/json',
-                'Content-Type' => 'application/json',
-            ],
-        ], false);
+        $this->url = $url;
     }
 
     /**
-     * @param LogRecord $logRecord
+     * @param Arrayable $message
      *
      * @return void
-     * @throws GuzzleException
      */
-    public function send(LogRecord $logRecord): void
+    public function send(Arrayable $message): void
     {
-        $header  = new HeaderBlock($logRecord);
-        $user    = new UserBlock($logRecord);
-        $file    = new FileBlock($logRecord);
-        $trace   = new TraceBlock($logRecord);
-        $message = new Message($this->username, $this->emoji);
-
-        $message->addBlock($header);
-        $message->addBlock($user);
-        $message->addBlock($file);
-        $message->addBlock($trace);
-        $message->addSection(new DividerSection());
-
-        $response = $this->client->post($this->url, $message);
-        //        dd($response->getBody()->getContents());
+        $response = Http::timeout(5)
+            ->withHeaders([
+                'Accept'       => 'application/json',
+                'Content-Type' => 'application/json',
+            ])
+            ->post($this->url, $message->toArray());
+        dd($response->body());
     }
 }

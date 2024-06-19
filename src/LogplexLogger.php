@@ -16,11 +16,8 @@ class LogplexLogger
      */
     public function __invoke(array $config): MonologLogger
     {
-        return new MonologLogger(env('APP_NAME'), [
-            new LogplexHandler(
-                $config['channels'] ?? [],
-                $config['level'] ?? Level::Debug
-            ),
+        return new MonologLogger(env('APP_NAME', 'LogPlex'), [
+            new LogplexHandler($config['level'] ?? Level::Error),
         ]);
     }
 }

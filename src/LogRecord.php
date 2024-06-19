@@ -4,6 +4,7 @@ namespace Shureban\LaravelLogplex;
 
 use App\Models\User;
 use Auth;
+use Illuminate\Http\Request;
 use Monolog\Level;
 use Monolog\LogRecord as BaseLogRecord;
 use Throwable;
@@ -14,6 +15,7 @@ class LogRecord
     private Level      $level;
     private ?Throwable $exception;
     private ?User      $user;
+    private ?Request   $request;
 
     /**
      * @param Level          $level
@@ -26,6 +28,7 @@ class LogRecord
         $this->message   = $message;
         $this->exception = $exception;
         $this->user      = Auth::user();
+        $this->request   = \request();
     }
 
     public static function createFromBase(BaseLogRecord $baseRecord): LogRecord
@@ -60,5 +63,10 @@ class LogRecord
     public function getUser(): ?User
     {
         return $this->user;
+    }
+
+    public function getRequest(): ?Request
+    {
+        return $this->request;
     }
 }
