@@ -35,6 +35,14 @@ class TraceRow
     /**
      * @return string
      */
+    public function getClassWithLine(): string
+    {
+        return sprintf('%s:%d', $this->getClass(), $this->getLine());
+    }
+
+    /**
+     * @return string
+     */
     public function getClass(): string
     {
         return $this->baseTrace['class'] ?? '';
@@ -62,5 +70,13 @@ class TraceRow
     public function isVendorFile(): bool
     {
         return str_contains($this->getFile(), 'vendor');
+    }
+
+    /**
+     * @return bool
+     */
+    public function isVendorClass(): bool
+    {
+        return str_starts_with($this->getClass(), 'Illuminate');
     }
 }

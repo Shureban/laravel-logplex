@@ -51,6 +51,9 @@ class LogRecord
         return $this->exception;
     }
 
+    /**
+     * @return TraceRow[]
+     */
     public function getExceptionTrace(): array
     {
         if (is_null($this->exception)) {
