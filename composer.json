@@ -19,7 +19,7 @@
         }
     ],
     "minimum-stability": "dev",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "autoload": {
         "psr-4": {
             "Shureban\\LaravelLogplex\\": "src/"
@@ -31,7 +31,9 @@
         }
     },
     "require": {
-        "php": "^8.3"
+        "php": ">=8.3",
+        "laravel/framework": ">=v10.0.0",
+        "guzzlehttp/guzzle": ">=7.0.0"
     },
     "prefer-stable": true,
     "extra": {
