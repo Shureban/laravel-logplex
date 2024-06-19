@@ -3,7 +3,6 @@
 namespace Shureban\LaravelLogplex\Channels\Slack\Blocks;
 
 use Shureban\LaravelLogplex\Channels\Slack\Block;
-use Shureban\LaravelLogplex\Channels\Slack\Elements\FieldsSection;
 use Shureban\LaravelLogplex\Channels\Slack\Elements\HeaderSection;
 use Shureban\LaravelLogplex\Channels\Slack\Elements\TextSection;
 use Shureban\LaravelLogplex\LogRecord;
@@ -35,13 +34,12 @@ class FileBlock implements Block
             return [];
         }
 
+        $file = str_replace(base_path('/'), '', $exception->getFile());
+        $line = $exception->getLine();
+
         return [
             (new HeaderSection('File :file_folder:'))->toArray(),
-            (new TextSection($exceptionClass->getClassWithLine()))->toArray(),
-            (new FieldsSection([
-                sprintf("*Class:*\n%s", $exceptionClass->getClass()),
-                sprintf("*Function:*\n%s", $exceptionClass->getFunction()),
-            ]))->toArray(),
+            (new TextSection(sprintf('%s:%d', $file, $line)))->toArray(),
         ];
     }
 
